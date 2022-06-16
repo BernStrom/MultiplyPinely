@@ -40,7 +40,9 @@ struct ContentView: View {
             
             HStack {
                 Button {
-                    generateQuestion()
+                    for _ in 0..<numberOfQuestions {
+                        generateQuestion()
+                    }
                 } label: {
                     Text("Start Game")
                 }
@@ -55,10 +57,7 @@ struct ContentView: View {
     func generateQuestion() {
         let randomNumber = Int.random(in: 1...12)
         let question = Question(text: "What is \(randomNumber) x \(multiplyNumber)", answer: randomNumber * multiplyNumber)
-        
-        for _ in 0..<numberOfQuestions {
-            questionsList.append(question)
-        }
+        questionsList.append(question)
     }
 }
 
