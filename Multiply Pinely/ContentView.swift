@@ -84,11 +84,11 @@ struct ContentView: View {
                                 .foregroundColor(pineTreeScore == 0 ? .orange : .green)
                         }
                     }
+                    
+                    Text("Collect trees to plant them!  🌲 = 1 correct answer")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
                 }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 20)
-                .background(.regularMaterial)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
                 
                 Spacer()
                 
