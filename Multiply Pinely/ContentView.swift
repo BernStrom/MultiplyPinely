@@ -12,6 +12,20 @@ struct Question {
     var answer: Int
 }
 
+struct Title: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.largeTitle)
+            .foregroundColor(.green)
+    }
+}
+
+extension View {
+    func titleStyle() -> some View {
+        modifier(Title())
+    }
+}
+
 struct ContentView: View {
     @State private var multiplyNumber = 2
     @State private var numberOfQuestions = 5
@@ -44,8 +58,9 @@ struct ContentView: View {
                 
             VStack(spacing: 20) {
                 Spacer()
-                Spacer()
-                Spacer()
+
+                Text("Multiply {🌲} Pinely")
+                    .titleStyle()
                 
                 Section {
                     Text(gameRoundActive ? questionsList[questionNumber].text : "Select your settings above")
@@ -141,6 +156,7 @@ struct ContentView: View {
                     .disabled(gameRoundActive ? true : false)
                 }
                 
+                Spacer()
                 Spacer()
             }
             .padding()
