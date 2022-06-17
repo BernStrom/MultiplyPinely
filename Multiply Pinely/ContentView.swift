@@ -19,11 +19,16 @@ struct ContentView: View {
     @State private var questionsList = [Question]()
     @State private var questionNumber = 1
     @State private var pineTreeScore = 0
+    @State private var playerAnswer = ""
+    @State private var scoreTitle = ""
+    @State private var scoreMessage = ""
+    @State private var showingScore = false
     @State private var settingGameRound = true
     @State private var gameRoundActive = false
+    @FocusState private var answerFieldIsFocused: Bool
     
     var body: some View {
-        ZStack {
+        VStack {
             List {
                 Section("Select Your Multiplication Table") {
                     Stepper(" Table of \(multiplyNumber)", value: $multiplyNumber, in: 2...12, step: 1)
@@ -38,17 +43,26 @@ struct ContentView: View {
             VStack(spacing: 20) {
                 Spacer()
                 Spacer()
+                Spacer()
                 
                 Section {
                     Text(gameRoundActive ? questionsList[0].text : "Select your settings above")
                         .font(gameRoundActive ? .largeTitle : .title2.weight(.heavy))
                         .foregroundColor(gameRoundActive ? .mint : .orange)
+                    
+                    TextField("Enter your answer", text: $playerAnswer)
+                        .padding()
+                        .background(.regularMaterial)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .keyboardType(.decimalPad)
+                        .focused($answerFieldIsFocused)
+                        .disabled(gameRoundActive ? false : true)
                 } header: {
                     HStack {
                         Image(systemName: "x.squareroot")
                             .foregroundColor(.mint)
                         
-                        Text("Calculate ")
+                        Text("Calculate")
                             .font(.subheadline.weight(.heavy))
                             .foregroundStyle(.secondary)
                         
@@ -112,12 +126,56 @@ struct ContentView: View {
             }
             .padding()
         }
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Button("Cancel") {
+                    answerFieldIsFocused = false
+                }
+                
+                Spacer()
+                
+                Button("Submit") {
+                    submitAnswer()
+                }
+            }
+        }
+        .alert(scoreTitle, isPresented: $showingScore) {
+            Button("Continue", action: askQuestion)
+        } message: {
+            Text("""
+                 \(scoreMessage)
+                 You currently have \(pineTreeScore) 🌲 \(pineTreeScore <= 1 ? "tree" : "trees") to plant.
+                 """)
+        }
     }
     
     func generateQuestion() {
         let randomNumber = Int.random(in: 1...12)
         let question = Question(text: "\(randomNumber) x \(multiplyNumber)", answer: randomNumber * multiplyNumber)
         questionsList.append(question)
+    }
+    
+    func askQuestion() {
+        if questionNumber < numberOfQuestions {
+            questionsList.removeFirst(1)
+            questionsList.shuffle()
+            questionNumber += 1
+            playerAnswer = ""
+        }
+    }
+    
+    func submitAnswer() {
+        if Int(playerAnswer) == questionsList[0].answer {
+            scoreTitle = "Correct"
+            scoreMessage = "Nicely done! You gained 1 🌲."
+            numberOfCorrectAnswer += 1
+            pineTreeScore += 1
+        } else {
+            scoreTitle = "Wrong"
+            scoreMessage = "The answer is \(questionsList[0].answer)."
+        }
+        
+        showingScore = true
     }
     
     func startGame() {
