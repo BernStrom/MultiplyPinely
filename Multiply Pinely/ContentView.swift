@@ -17,7 +17,7 @@ struct ContentView: View {
     @State private var numberOfQuestions = 5
     @State private var numberOfCorrectAnswer = 0
     @State private var questionsList = [Question]()
-    @State private var questionNumber = 1
+    @State private var questionNumber = 0
     @State private var pineTreeScore = 0
     @State private var playerAnswer = ""
     @State private var scoreTitle = ""
@@ -46,7 +46,7 @@ struct ContentView: View {
                 Spacer()
                 
                 Section {
-                    Text(gameRoundActive ? questionsList[0].text : "Select your settings above")
+                    Text(gameRoundActive ? questionsList[questionNumber].text : "Select your settings above")
                         .font(gameRoundActive ? .largeTitle : .title2.weight(.heavy))
                         .foregroundColor(gameRoundActive ? .mint : .orange)
                     
@@ -74,7 +74,7 @@ struct ContentView: View {
                 Spacer()
                 
                 VStack(spacing: 30) {
-                    Text("Question \(questionNumber) of \(numberOfQuestions)")
+                    Text("Question \(questionNumber + 1) of \(numberOfQuestions)")
                         .font(.headline)
                     
                     HStack(spacing: 60) {
@@ -117,9 +117,10 @@ struct ContentView: View {
                         Text("Start Game")
                     }
                     .padding()
-                    .background(.mint)
+                    .background(gameRoundActive ? .gray : .mint)
                     .foregroundColor(.white)
                     .clipShape(RoundedRectangle(cornerRadius: 15))
+                    .disabled(gameRoundActive ? true : false)
                 }
                 
                 Spacer()
@@ -157,22 +158,20 @@ struct ContentView: View {
     
     func askQuestion() {
         if questionNumber < numberOfQuestions {
-            questionsList.removeFirst(1)
-            questionsList.shuffle()
             questionNumber += 1
             playerAnswer = ""
         }
     }
     
     func submitAnswer() {
-        if Int(playerAnswer) == questionsList[0].answer {
-            scoreTitle = "Correct"
+        if Int(playerAnswer) == questionsList[questionNumber].answer {
+            scoreTitle = "Correct ✅"
             scoreMessage = "Nicely done! You gained 1 🌲."
             numberOfCorrectAnswer += 1
             pineTreeScore += 1
         } else {
-            scoreTitle = "Wrong"
-            scoreMessage = "The answer is \(questionsList[0].answer)."
+            scoreTitle = "Wrong ❌"
+            scoreMessage = "The answer is \(questionsList[questionNumber].answer)."
         }
         
         showingScore = true
