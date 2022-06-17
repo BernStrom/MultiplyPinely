@@ -32,32 +32,61 @@ struct ContentView: View {
             }
             .disabled(settingGameRound ? false : true)
                 
-            VStack {
+            VStack(spacing: 20) {
+                Spacer()
+                Spacer()
+                
                 Section {
-                    Text(gameRoundActive ? questionsList[0].text : "")
-                }
-            }
-            
-            HStack {
-                Button {
-                    for _ in 0..<numberOfQuestions {
-                        generateQuestion()
+                    Text(gameRoundActive ? questionsList[0].text : "Select your settings above")
+                        .font(gameRoundActive ? .largeTitle : .title2.weight(.heavy))
+                        .foregroundColor(gameRoundActive ? .mint : .orange)
+                } header: {
+                    HStack {
+                        Image(systemName: "x.squareroot")
+                            .foregroundColor(.mint)
+                        
+                        Text("Calculate ")
+                            .font(.subheadline.weight(.heavy))
+                            .foregroundStyle(.secondary)
+                        
+                        Image(systemName: "sum")
+                            .foregroundColor(.mint)
                     }
-                } label: {
-                    Text("Start Game")
                 }
-                .padding()
-                .background(.mint)
-                .foregroundColor(.white)
-                .clipShape(RoundedRectangle(cornerRadius: 15))
+                
+                Spacer()
+                
+                HStack {
+                    Button {
+                        for _ in 0..<numberOfQuestions {
+                            generateQuestion()
+                        }
+                        
+                        startGame()
+                    } label: {
+                        Text("Start Game")
+                    }
+                    .padding()
+                    .background(.mint)
+                    .foregroundColor(.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                }
+                
+                Spacer()
             }
+            .padding()
         }
     }
     
     func generateQuestion() {
         let randomNumber = Int.random(in: 1...12)
-        let question = Question(text: "What is \(randomNumber) x \(multiplyNumber)", answer: randomNumber * multiplyNumber)
+        let question = Question(text: "\(randomNumber) x \(multiplyNumber)", answer: randomNumber * multiplyNumber)
         questionsList.append(question)
+    }
+    
+    func startGame() {
+        settingGameRound = false
+        gameRoundActive = true
     }
 }
 
