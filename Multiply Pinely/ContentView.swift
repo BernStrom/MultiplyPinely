@@ -23,6 +23,7 @@ struct ContentView: View {
     @State private var scoreTitle = ""
     @State private var scoreMessage = ""
     @State private var showingScore = false
+    @State private var endGame = false
     @State private var settingGameRound = true
     @State private var gameRoundActive = false
     @FocusState private var answerFieldIsFocused: Bool
@@ -148,6 +149,15 @@ struct ContentView: View {
                  You currently have \(pineTreeScore) 🌲 \(pineTreeScore <= 1 ? "tree" : "trees") to plant.
                  """)
         }
+        .alert(scoreTitle, isPresented: $endGame) {
+            Button("Reset", action: resetGame)
+            Button("Continue") { }
+        } message: {
+            Text("""
+                You got \(numberOfCorrectAnswer) out of \(numberOfQuestions) correct.
+                Tap Reset to start a new round.
+                """)
+        }
     }
     
     func generateQuestion() {
@@ -157,7 +167,7 @@ struct ContentView: View {
     }
     
     func askQuestion() {
-        if questionNumber < numberOfQuestions {
+        if questionNumber + 1 < numberOfQuestions {
             questionNumber += 1
             playerAnswer = ""
         }
@@ -175,11 +185,29 @@ struct ContentView: View {
         }
         
         showingScore = true
+        
+        if questionNumber + 1 == numberOfQuestions {
+            endGame = true
+            scoreTitle = "Your Results 📋"
+        }
     }
     
     func startGame() {
         settingGameRound = false
         gameRoundActive = true
+    }
+    
+    func resetGame() {
+        multiplyNumber = 2
+        numberOfQuestions = 5
+        numberOfCorrectAnswer = 0
+        questionsList = [Question]()
+        questionNumber = 0
+        pineTreeScore = 0
+        playerAnswer = ""
+        showingScore = false
+        settingGameRound = true
+        gameRoundActive = false
     }
 }
 
