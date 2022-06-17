@@ -26,6 +26,7 @@ struct ContentView: View {
     @State private var endGame = false
     @State private var settingGameRound = true
     @State private var gameRoundActive = false
+    @State private var resetGameProgress = false
     @FocusState private var answerFieldIsFocused: Bool
     
     var body: some View {
@@ -57,7 +58,7 @@ struct ContentView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                         .keyboardType(.decimalPad)
                         .focused($answerFieldIsFocused)
-                        .disabled(gameRoundActive ? false : true)
+                        .disabled(settingGameRound || endGame ? true : false)
                 } header: {
                     HStack {
                         Image(systemName: "x.squareroot")
@@ -109,6 +110,22 @@ struct ContentView: View {
                 
                 HStack {
                     Button {
+                        resetGameProgress.toggle()
+                    } label: {
+                        Text(settingGameRound ? "Reset Settings" : "Reset Game")
+                    }
+                    .padding()
+                    .background(.orange)
+                    .foregroundColor(.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                    .alert("Resetting Game...", isPresented: $resetGameProgress) {
+                        Button("Yes", action: resetGame)
+                        Button("No") { }
+                    } message: {
+                        Text(settingGameRound ? "Are you sure you want to reset your settings?" : "Are you sure you want to reset your progress?")
+                    }
+                    
+                    Button {
                         for _ in 0..<numberOfQuestions {
                             generateQuestion()
                         }
@@ -131,7 +148,7 @@ struct ContentView: View {
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Button("Cancel") {
-                    answerFieldIsFocused = false
+                    answerFieldIsFocused.toggle()
                 }
                 
                 Spacer()
@@ -151,7 +168,9 @@ struct ContentView: View {
         }
         .alert(scoreTitle, isPresented: $endGame) {
             Button("Reset", action: resetGame)
-            Button("Continue") { }
+            Button("OK") {
+                playerAnswer = ""
+            }
         } message: {
             Text("""
                 You got \(numberOfCorrectAnswer) out of \(numberOfQuestions) correct.
@@ -184,12 +203,12 @@ struct ContentView: View {
             scoreMessage = "The answer is \(questionsList[questionNumber].answer)."
         }
         
-        showingScore = true
-        
         if questionNumber + 1 == numberOfQuestions {
             endGame = true
             scoreTitle = "Your Results 📋"
         }
+        
+        showingScore = true
     }
     
     func startGame() {
@@ -208,6 +227,7 @@ struct ContentView: View {
         showingScore = false
         settingGameRound = true
         gameRoundActive = false
+        endGame = false
     }
 }
 
