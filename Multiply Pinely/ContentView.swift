@@ -15,7 +15,10 @@ struct Question {
 struct ContentView: View {
     @State private var multiplyNumber = 2
     @State private var numberOfQuestions = 5
+    @State private var numberOfCorrectAnswer = 0
     @State private var questionsList = [Question]()
+    @State private var questionNumber = 1
+    @State private var pineTreeScore = 0
     @State private var settingGameRound = true
     @State private var gameRoundActive = false
     
@@ -53,6 +56,39 @@ struct ContentView: View {
                             .foregroundColor(.mint)
                     }
                 }
+                
+                Spacer()
+                
+                VStack(spacing: 30) {
+                    Text("Question \(questionNumber) of \(numberOfQuestions)")
+                        .font(.headline)
+                    
+                    HStack(spacing: 60) {
+                        VStack(spacing: 10) {
+                            Text("Correct Answer In:")
+                                .font(.subheadline.weight(.semibold))
+                                .foregroundStyle(.secondary)
+                            
+                            Text("\(numberOfCorrectAnswer) out of \(numberOfQuestions) \(numberOfCorrectAnswer <= 1 ? "question" : "questions")")
+                                .font(.headline)
+                                .foregroundColor(numberOfCorrectAnswer == numberOfQuestions ? .green : .orange)
+                        }
+                        
+                        VStack(spacing: 10) {
+                            Text("🌲 Collected:")
+                                .font(.subheadline.weight(.semibold))
+                                .foregroundStyle(.secondary)
+                            
+                            Text("\(pineTreeScore) \(pineTreeScore <= 1 ? "tree" : "trees")")
+                                .font(.headline)
+                                .foregroundColor(pineTreeScore == 0 ? .orange : .green)
+                        }
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 20)
+                .background(.regularMaterial)
+                .clipShape(RoundedRectangle(cornerRadius: 20))
                 
                 Spacer()
                 
