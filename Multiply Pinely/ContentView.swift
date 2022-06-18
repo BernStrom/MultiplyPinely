@@ -41,12 +41,13 @@ struct ContentView: View {
     @State private var settingGameRound = true
     @State private var gameRoundActive = false
     @State private var resetGameProgress = false
+    @State private var enlargeAnimate = 1.0
     @FocusState private var answerFieldIsFocused: Bool
     
     var body: some View {
         VStack {
             List {
-                Section("Select Your Multiplication Table") {
+                Section("Select Your Multiplication Table (2-12)") {
                     Stepper(" Table of \(multiplyNumber)", value: $multiplyNumber, in: 2...12, step: 1)
                 }
                 
@@ -66,6 +67,15 @@ struct ContentView: View {
                     Text(gameRoundActive ? questionsList[questionNumber].text : "Select your settings above")
                         .font(gameRoundActive ? .largeTitle : .title2.weight(.heavy))
                         .foregroundColor(gameRoundActive ? .mint : .orange)
+                        .scaleEffect(enlargeAnimate)
+                        .animation(
+                            .easeInOut(duration: 2)
+                                .repeatForever(autoreverses: true),
+                            value: enlargeAnimate
+                        )
+                        .onAppear {
+                            enlargeAnimate += 0.3
+                        }
                     
                     TextField("Enter your answer", text: $playerAnswer)
                         .padding()
