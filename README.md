@@ -24,7 +24,7 @@ An example, the player selected a "*Table of 2*" and "*5*" for their desired num
 
 ## App preview
 
-
+https://user-images.githubusercontent.com/65307853/182234446-946c84d0-6b70-4d64-9449-378b32b22ddb.mp4
 
 ## Trying it yourself
 
