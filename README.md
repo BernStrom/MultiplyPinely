@@ -20,7 +20,7 @@ To begin practicing, users need to choose their desired multiplication table to 
 
 After setting their desired options, users can start the practice round by tapping on the "Start Game" button. For answering the questions, users can type in their answers into the input field to submit their answers. As for the "entertainment" side, users can collect trees and will be awarded +1 tree for each question they got right. If users got their answer wrong, no trees are awarded. Trees are accumulative only for the current practice round and will be reset back to 0 for every new round.
 
-An example, the player selected a "*Table of 2*" and "*5*" for their desired number of questions. When the game starts, the player will have to go through 5 questions with a random range of "*1-12 x 2*". When the player answers "*14*" for the question "*7 x 2*", 1 tree will be awarded to the player. When all questions are answered, the practice round ends with the option for the player to reset the game and start a new round with new settings.
+An example, the player selected **Table of 2** and **5** for their desired number of questions. When the game starts, the player will have to go through 5 questions with a random range of **1-12 x 2**. When the player answers **14** for the question **7 x 2**, 1 tree will be awarded to the player. When all questions are answered, the practice round ends with the option for the player to reset the game and start a new round with new settings.
 
 ## App preview
 
@@ -28,7 +28,7 @@ https://user-images.githubusercontent.com/65307853/182234446-946c84d0-6b70-4d64-
 
 ## Trying it yourself
 
-Multiply Pinely  is written using Xcode 13.2 and Swift 5.0. To try it out, you can clone this project and build it immediately by opening `Multiply Pinely .xcodeproj`.
+Multiply Pinely  is written using Xcode 13.2 and Swift 5.0. To try it out, you can clone this project and build it immediately by opening `Multiply Pinely.xcodeproj`.
 
 As far as I know the app feature is complete, but there are likely to be errors all over the place at least to begin with – if you hit any problems, either building or running the app, please let me know.
 
